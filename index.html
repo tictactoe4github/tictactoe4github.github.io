@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>tictactoe</title>
+
+
+    <style>
+
+        body {
+            font-family: sans-serif;
+            text-align: center;
+        }
+
+        table {
+            margin: auto;
+            border-collapse: collapse;
+        }
+
+        td {
+            width: 75px;
+            height: 75px;
+            border: 1px solid black;
+            font-size: 50px;
+        }
+
+
+        td:first-child {
+            border-left: 0;
+        }
+
+        td:last-child {
+            border-right: 0;
+        }
+
+        tr:first-child td {
+            border-top: 0;
+        }
+
+        tr:last-child td {
+            border-bottom: 0;
+        }
+
+        td:hover {
+            background-color: #eeeeee;
+            cursor: pointer;
+        }
+
+
+        #info {
+            margin-top: 1em;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<h1>Tic-Tac-Toe</h1>
+
+<table id="board">
+
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+
+</table>
+
+<div id="info">x ist am Zug</div>
+
+
+<script>
+
+// Ergänzen Sie hier Ihren javaScript-Code
+var turns=0;
+var player=["x","o"];
+var board=document.getElementById("board");
+var text=" is the winner!";
+
+             
+
+function isEmpty(cell){
+    if(cell.innerHTML=="x"||cell.innerHTML=="o"){
+        return false;
+    }else{
+        return true;
+    }
+}
+
+function drawxo(cell){
+    cell.innerHTML=player[turns%2];
+}
+
+function isWinner(){
+    cur=player[turns%2];
+    var winning=((board.rows[0].cells[0].innerHTML==cur&&board.rows[0].cells[1].innerHTML==cur&&board.rows[0].cells[2].innerHTML==cur)||
+                 (board.rows[1].cells[0].innerHTML==cur&&board.rows[1].cells[1].innerHTML==cur&&board.rows[1].cells[2].innerHTML==cur)||
+                 (board.rows[2].cells[0].innerHTML==cur&&board.rows[2].cells[1].innerHTML==cur&&board.rows[2].cells[2].innerHTML==cur)||
+                 (board.rows[0].cells[0].innerHTML==cur&&board.rows[1].cells[0].innerHTML==cur&&board.rows[2].cells[0].innerHTML==cur)||
+                 (board.rows[0].cells[1].innerHTML==cur&&board.rows[1].cells[1].innerHTML==cur&&board.rows[2].cells[1].innerHTML==cur)||
+                 (board.rows[0].cells[2].innerHTML==cur&&board.rows[1].cells[2].innerHTML==cur&&board.rows[2].cells[2].innerHTML==cur)||
+                 (board.rows[0].cells[0].innerHTML==cur&&board.rows[1].cells[1].innerHTML==cur&&board.rows[2].cells[2].innerHTML==cur)||
+                 (board.rows[0].cells[2].innerHTML==cur&&board.rows[1].cells[1].innerHTML==cur&&board.rows[2].cells[0].innerHTML==cur));
+    if(winning){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+function isDraw(){
+    if(turns==8&&!isWinner()){
+        return true;
+    }else{
+        return false;
+    }
+}
+//the game does not stop after somebody winns, but that is not a problem due to unclear instructions
+function listener(event){
+    //store clicked element 
+    var element=event.target;
+    var currentPlayer=player[turns%2];
+    //check if empty and draw
+    if(isEmpty(element)){
+        drawxo(element);
+        //what's next?
+        if(isWinner()){
+            document.getElementById("info").innerHTML=player[turns%2]+text;
+        }else if(isDraw()){
+            document.getElementById("info").innerHTML="it's a draw!";
+        }else{
+            document.getElementById("info").innerHTML=player[(turns+1)%2]+" is next";
+        }
+        turns++;
+    }
+}
+board.addEventListener("click",listener);
+</script>
+
+</body>
+<!--:)-->
+</html>
